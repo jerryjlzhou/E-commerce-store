@@ -6,6 +6,7 @@
 import { findAllProducts } from "../../lib/products";
 import { initMongoose } from "../../lib/mongoose";
 import SearchableProductList from "../../components/SearchableProductList";
+import Footer from "../../components/footer";
 
 
 export default async function Home() {
@@ -18,6 +19,7 @@ export default async function Home() {
     return (
     <div className="p-5">
       <SearchableProductList products={plainProducts} />     
+      <Footer />
     </div>
   );
 }
