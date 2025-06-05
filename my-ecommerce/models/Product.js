@@ -1,3 +1,8 @@
+/**
+ * Defines Mongoose schema for Product
+ * Specifies the structure of product documents in MongoDB, provides methods to query product collection
+ */
+
 import { model, models, Schema } from "mongoose";
  
 

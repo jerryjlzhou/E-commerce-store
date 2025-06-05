@@ -1,7 +1,11 @@
-
+/**
+ * A reusable React component to display an individual product card 
+ * Encapsulates UI and logic related to rendering a single product
+ */
 
 type Props = {
     product: {
+      _id: string;
       name: string;
       description: string;
       price: number;

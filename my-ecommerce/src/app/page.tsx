@@ -1,41 +1,23 @@
-"use client";
-import { useEffect, useState } from "react";
-import Product from "../../components/Product";
+/**
+ * Main front end React page component (homepage)
+ * Role: renders the UI, fetches product data from the API 
+ */
+
+import { findAllProducts } from "../../lib/products";
+import { initMongoose } from "../../lib/mongoose";
+import SearchableProductList from "../../components/SearchableProductList";
 
 
-type ProductInfo = {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  picture: string;
-};
+export default async function Home() {
+  await initMongoose();     // connect to mongoDB
+  const products = await findAllProducts(); // fetch products from mongoDB
 
-export default function Home() {
-  const [productsInfo, setProductsInfo] = useState<ProductInfo[]>([]);
+  const plainProducts = JSON.parse(JSON.stringify(products)); // convert Mongoose doc to plain objects
 
-  useEffect(() => {
-    fetch("/api/products")
-      .then((response) => response.json())
-      .then((json) => setProductsInfo(json));
-  }, []);
-
-  const categoryNames = [...new Set(productsInfo.map((p) => p.category))];
-
-  return (
+  // render client component with data
+    return (
     <div className="p-5">
-      {categoryNames.map((categoryName) => (
-        <div key={categoryName}>
-          <h2 className="text-2xl capitalize">{categoryName}</h2>
-          <div className="flex flex-wrap gap-4">
-            {productsInfo
-              .filter((p) => p.category === categoryName)
-              .map((product) => (
-                <Product key={product.name} product={product} />
-              ))}
-          </div>
-        </div>
-      ))}
+      <SearchableProductList products={plainProducts} />     
     </div>
   );
 }
