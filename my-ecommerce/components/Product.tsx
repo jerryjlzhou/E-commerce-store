@@ -3,6 +3,9 @@
  * Encapsulates UI and logic related to rendering a single product
  */
 
+import { useContext } from "react";
+import { ProductsContext } from "./ProductsContext";
+
 type Props = {
     product: {
       _id: string;
@@ -15,6 +18,18 @@ type Props = {
   };
   
   export default function Product({ product }: Props) {
+
+    const context = useContext(ProductsContext);
+
+    if (!context) throw new Error("Product must be used within a ProductsContextProvider");
+
+    const {selectedProducts, setSelectedProducts} = context;
+
+    function addProduct() {
+      setSelectedProducts(prev => [...prev, product._id]);
+    }
+    
+    
     return (
       <div className="w-64">
         <div className="bg-blue-100 p-5 rounded-xl">
@@ -26,7 +41,7 @@ type Props = {
         <p className="text-sm mt-1 leading-4">{product.description}</p>
         <div className="flex mt-1">
           <div className="text-2xl font-bold grow">${product.price}</div>
-          <button className="bg-emerald-400 text-white py-1 px-3 rounded-xl">+</button>
+          <button onClick={addProduct} className="bg-emerald-400 text-white py-1 px-3 rounded-xl">+</button>
         </div>
       </div>
     );
